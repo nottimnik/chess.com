@@ -28,8 +28,8 @@ async def help(ctx):
 
 @client.command() #Stats Command
 async def stats(ctx, username = None):
-    if(username == None):
-        em = discord.Embed(title="You need to enter the username of the user you want to get the stats of", description = "Usage: `!kick [username]`", color = 15158332)
+    if(username == None): #error if the user didn't entered a username
+        em = discord.Embed(title="You need to enter the username of the user you want to get the stats of", description = "Usage: `!stats [username]`", color = 15158332)
         await ctx.send(embed = em)
     else:
         em = discord.Embed(title = f"{username}\'s Stats", description = f"The chess.com stats of the user: {username}", color = 12370112)
@@ -41,6 +41,13 @@ async def stats(ctx, username = None):
         em.add_field(name = f"Puzzles", value = f"{ratings[4]}")
         em.add_field(name = f"Puzzle Rush", value = f"{ratings[5]}")
         await ctx.send(embed = em)
+
+@stats.error
+async def stats_error(ctx, error):
+    if isinstance(error, commands.CommandInvokeError):
+        em = discord.Embed(title = "We couldn't find this user :(", color = 15158332)
+        await ctx.send(embed = em)
+
 
 ##reads the token from the file token.txt
 token = open(f"Token/token.txt", "r")
