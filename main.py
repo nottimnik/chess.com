@@ -112,7 +112,7 @@ async def status_error(ctx, error):
 
 
 ##reads the token from the file token.txt
-token = open(f"token/token.txt", "r")
+token = open(f"Token/token.txt", "r")
 token_key = token.read()
 token.close()
 client.run(token_key)
