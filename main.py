@@ -8,9 +8,7 @@ client = commands.Bot(command_prefix="-")
 
 #Other Files
 from src.user_stats import get_current_player_rating, get_status
-
-#removes the default help command
-client.remove_command("help")
+from src.leaderboards import get_leaderboard, leaderboards_key
 
 @client.event
 async def on_ready():
@@ -20,12 +18,26 @@ async def on_ready():
     print("----------")
     await client.change_presence(activity=discord.Game(name="-help"))
 
-@client.command()
+#--------------------------------- Custom Help Command ---------------------------------#
+
+#removes the default help command
+client.remove_command("help")
+
+@client.group(invoke_without_command = True)
 async def help(ctx):
-    em = discord.Embed(title = "SOME1 Help Commands")
-    em.add_field(name = "-stats <username>", value = "`get the stats of the given user`", inline = False)
-    em.add_field(name = "-status <username>", value = "`check if the user is online or offline`")
+    em = discord.Embed(title = "Chess.com Help Commands", color = 0x2ecc71)
+    em.add_field(name = "👑 Leaderboards", value = "`!help leaderboards`")
+    em.add_field(name = "⭐ Statistics", value = "`!help statistics`")
     await ctx.send(embed = em)
+
+@help.command()
+async def leaderboards(ctx):
+    em = discord.Embed(title = "Leaderboards Commands", color = 0x2ecc71)
+    em.add_field(name = "The Command:", value = "!leaderboard [category] (number of users to display max. 50)", inline = False)
+    em.add_field(name = "All the Categories:", value = "blitz, blitz960, rapid, bullet, daily, daily960, puzzles, bughouse, doubles, threecheck, crazyhouse, kingofthehill", inline = False)
+    await ctx.send(embed = em)
+
+#-------------------------------------------
 
 @client.command() #Stats Command
 async def stats(ctx, username = None):
@@ -76,6 +88,27 @@ async def status_error(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
         em = discord.Embed(title = "We couldn't find this user :(", color = 15158332)
         await ctx.send(embed = em)
+
+
+# @client.command()
+# async def leaderboard(ctx, category = "blitz", number = 5):
+
+#     if(leaderboards_key(category)==None):
+#         em = discord.Embed(title = "The category that you've entered is invalid.", description = "Usage: `-leaderboard [category] (how many users to show max. 50)`", color = )
+#         await ctx.send(embed = em)
+#     elif(number>50):
+#         em = discord.Embed(title = "The category that you've entered is invalid.", description = "Usage: `-leaderboard [category] (how many users to show max. 50)`", color = )
+#         await ctx.send(embed = em)
+#     else:
+#         em = discord.Embed(title = f"👑 Top {number} {category} players", color = 0x2ecc71)
+#         top50 = get_leaderboard(category)
+    
+#         i = 0
+
+#         for i in range(0,number):
+#             em.add_field(name = f"{i+1} - {top50[i+1][0]}", value = f"Rating: {top50[i+1][1]}", inline = False)
+#             i += 1
+#         await ctx.send(embed = em)
 
 
 ##reads the token from the file token.txt
