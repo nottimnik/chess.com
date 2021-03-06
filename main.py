@@ -32,7 +32,7 @@ async def help(ctx):
 
 @help.command()
 async def leaderboards(ctx):
-    em = discord.Embed(title = "Leaderboards Commands", color = 0x2ecc71)
+    em = discord.Embed(title = "Leaderboards Commands", description = "See the leaderboard of the given category.",color = 0x2ecc71)
     em.add_field(name = "The Command:", value = "!leaderboard [category] (number of users to display max. 50)", inline = False)
     em.add_field(name = "All the Categories:", value = "blitz, blitz960, rapid, bullet, daily, daily960, puzzles, bughouse, doubles, threecheck, crazyhouse, kingofthehill", inline = False)
     await ctx.send(embed = em)
